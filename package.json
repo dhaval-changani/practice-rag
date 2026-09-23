@@ -1,0 +1,37 @@
+{
+    "name": "rag-poc",
+    "version": "1.0.0",
+    "description": "This project is a poc on how to store/retrieve complex documents using RAG",
+    "main": "index.js",
+    "directories": {
+        "doc": "docs"
+    },
+    "scripts": {
+        "start": "tsx src/index.ts",
+        "dev": "tsx watch src/index.ts",
+        "build": "tsc",
+        "typecheck": "tsc --noEmit",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dhaval-changani/practice-rag.git"
+    },
+    "keywords": [
+        "RAG"
+    ],
+    "author": "Dhaval Changani",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/dhaval-changani/practice-rag/issues"
+    },
+    "homepage": "https://github.com/dhaval-changani/practice-rag#readme",
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "eslint": "^10.11.0",
+        "globals": "^17.12.0",
+        "jiti": "^2.7.0",
+        "prettier": "3.9.8",
+        "typescript-eslint": "^8.70.1"
+    }
+}
