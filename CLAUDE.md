@@ -36,3 +36,7 @@ Expected to mirror the sibling `AI Agent POC` project once scaffolded: TypeScrip
 ## Environment
 
 No `.env` exists yet. Once one is needed (e.g. an embedding-provider API key), expect it loaded via Node's native `process.loadEnvFile()` (no `dotenv` package), with `.env` covered by `.gitignore`.
+
+## Plan files
+
+Save any plan files to `docs/plans/` in this repo, not to an external plans directory. This keeps planning history alongside the project it describes.
