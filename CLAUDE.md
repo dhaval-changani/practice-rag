@@ -15,15 +15,25 @@ This repo is a learning project. I write all the code myself.
 
 ## Commands
 
-No `package.json` exists yet — this repo is not scaffolded. Once it is, expect this section to fill in with the same shape as the sibling `AI Agent POC` project: a `dev`/`start` script run via `tsx`, and `typecheck` via `tsc --noEmit`.
+- `npm start` — run `src/index.ts` via `tsx` (no build step). `npm run dev` — same, in watch mode.
+- `npm run typecheck` — `tsc --noEmit`. `npm run build` — emit to `dist/`.
+- `npx eslint .` — lint (no npm script). Flat config in `eslint.config.mts` (js recommended + typescript-eslint recommended), loaded via `jiti`.
+- `npx prettier --write .` — format (no npm script).
+- No test runner — the `test` script is still the npm placeholder.
 
 ## Architecture
 
-Not yet built. This is a RAG (retrieval-augmented generation) learning POC — the expected shape is the standard RAG pipeline: ingestion → chunking → embedding → vector store → retrieval → generation. No files or modules exist yet to describe; this section gets filled in as real pieces land.
+A RAG (retrieval-augmented generation) learning POC. Target shape is the standard pipeline — ingestion → chunking → embedding → vector store → retrieval → generation — built one stage at a time per the build plan in `LEARNING.md`.
+
+- `/corpus` — ~27 internal engineering docs exported as `.doc`. **Gitignored** (`*corpus` in `.gitignore`): local-only, never commit it or copy its contents into tracked files.
+- `QUESTIONS.md` — fixed eval set of 15 questions, written before building anything; every stage is judged against it.
+- Current work is Stage 1 (chunking comparison): `src/index.ts` is the entry point; `src/chunking-pipeline/` holds the corpus reader (`Pipeline`) and the fixed-size and semantic chunkers. Conceptual roadmap: `docs/plans/stage-1-chunking-comparison.md`.
 
 ## Known rough edges
 
-None yet — nothing has been built. Real gotchas and bugs go here as they're found, same as the sibling project's convention: observations only, mine to fix under Learning Mode.
+Real gotchas and bugs go here as they're found, same as the sibling project's convention: observations only, mine to fix under Learning Mode.
+
+- **Corpus `.doc` files are not Word documents.** They're Confluence "Export to Word" output: a MIME `multipart/related` message (MHTML) wrapping a single quoted-printable HTML part. Word-binary parsers like `word-extractor` sniff magic bytes and reject them ("Unable to read this type of file"). The HTML inside keeps real heading/paragraph/table structure, which matters for the Stage 1 semantic chunker.
 
 ## LEARNING.md
 
@@ -31,7 +41,9 @@ None yet — nothing has been built. Real gotchas and bugs go here as they're fo
 
 ## Conventions
 
-Expected to mirror the sibling `AI Agent POC` project once scaffolded: TypeScript with ESM (`"type": "module"`), `verbatimModuleSyntax` + `isolatedModules` (relative imports need explicit `.js` extensions), strict mode, and `tsx` for running without a build step.
+- TypeScript with ESM (`"type": "module"`, `module: nodenext`), `verbatimModuleSyntax` + `isolatedModules`. Relative imports need explicit `.js` extensions — a bare directory import like `./chunking-pipeline` won't resolve.
+- `strict`, plus `noUncheckedIndexedAccess` (array/record indexing yields `T | undefined`) and `exactOptionalPropertyTypes`.
+- Prettier: 4-space indent, single quotes, semicolons, `printWidth` 120, `trailingComma` es5.
 
 ## Environment
 
