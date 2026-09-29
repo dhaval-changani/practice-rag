@@ -1,20 +1,23 @@
-const CHUNK_SIZE = 150;
+import type { Chunk } from './chunk.js';
+
+const CHUNK_SIZE = 200;
 const CHUNK_OVERLAP = 50;
 
-function generateChunks(text: string) {
-  const splits = text.split(" ");
+export function generateFixedChunks(text: string): Chunk[] {
+    const chunkSteps = text.length / CHUNK_SIZE;
+    const chunks: Chunk[] = [];
 
-  if (!splits.length) {
-    return [];
-  }
+    for (let i = 0; i < chunkSteps; i++) {
+        const index = i * CHUNK_SIZE;
+        const chunk = text.slice(index, (i + 1) * CHUNK_SIZE + CHUNK_OVERLAP);
+        chunks.push({
+            text: chunk,
+            meta: {
+                index,
+                offset: CHUNK_SIZE + CHUNK_OVERLAP,
+            },
+        });
+    }
 
-  const chunks = [];
-  let start = 0;
-  let end = CHUNK_SIZE;
-
-  while (end < splits.length) {
-    if ()
-  }
-
-  return chunks;
+    return chunks;
 }
