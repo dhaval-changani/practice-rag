@@ -13,7 +13,8 @@ export class Pipeline {
     ) {}
 
     async getFiles(): Promise<Dirent<string>[]> {
-        return await fs.readdir(this.path, { withFileTypes: true });
+        const files = await fs.readdir(this.path, { withFileTypes: true });
+        return files.filter((file) => file.isFile() && file.name.includes('.doc'));
     }
 
     private async getFileBody(file: Dirent<string>): Promise<string | undefined> {
@@ -27,23 +28,18 @@ export class Pipeline {
         if (content) {
             // cleanup text
             const $ = cheerio.load(content);
+            $('script, style, head').remove();
             return $.text().replace(/\s+/g, ' ').trim();
         }
     }
 
     async runPipeline() {
         const files = await this.getFiles();
-        const fileBody = await this.getFileBody(files[0]!);
-        if (this.strategy === 'Fixed') {
-            console.log(generateFixedChunks(fileBody!));
+        for (const file of files) {
+            const fileBody = await this.getFileBody(file);
+            if (fileBody && this.strategy === 'Fixed') {
+                console.log(generateFixedChunks(fileBody, file.name));
+            }
         }
-
-        //
-        //         for (const file of files) {
-        //             const fileBody = await this.getFileBody(file);
-        //             if (this.strategy === 'Fixed') {
-        //                 console.log(generateFixedChunks(fileBody));
-        //             }
-        //         }
     }
 }
